@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch Sử Mua Hàng</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/history.css">
+</head>
+<body>
+    <header id="header-placeholder"></header>
+
+    <main>
+        <div class="container">
+            <h1>Lịch Sử Mua Hàng</h1>
+
+            <div class="quick-actions">
+                <p>Bạn muốn thưởng thức lại những món ăn tuyệt vời?</p>
+                <a href="index.html" class="btn btn-primary">Xem Thực Đơn & Đặt Hàng Ngay</a>
+            </div>
+
+            <div id="order-list">
+                <!-- JavaScript điền vào đây -->
+            </div>
+        </div>
+    </main>
+    
+    <div id="toast-container"></div>
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser || !currentUser.id) {
+                showToast("Vui lòng đăng nhập để xem lịch sử mua hàng.");
+                setTimeout(() => window.location.href = 'login.html', 1500);
+                return;
+            }
+            displayOrderHistory(currentUser.id);
+        });
+
+        function displayOrderHistory(userId) {
+            const orderListDiv = document.getElementById('order-list');
+            orderListDiv.classList.add('order-list-container');
+            
+            const allOrders = JSON.parse(localStorage.getItem('orders')) || [];
+            const userOrders = allOrders.filter(order => order.userId === userId);
+
+            if (userOrders.length === 0) {
+                const emptyHTML = `<div class="empty-state"><p>Bạn chưa có đơn hàng nào.</p></div>`;
+                orderListDiv.innerHTML = emptyHTML;
+                return;
+            }
+
+            userOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            let html = '';
+            userOrders.forEach(order => {
+                const statusClass = order.status.toLowerCase().replace(/\s+/g, '-');
+                html += `
+                    <div class="order-card">
+                        <div class="order-header">
+                            <h3>Mã đơn hàng: ${order.id}</h3>
+                            <span class="order-date">${new Date(order.date).toLocaleDateString('vi-VN')}</span>
+                        </div>
+                        <div class="order-details">
+                            <p>Tổng tiền: <strong>${order.total.toLocaleString('vi-VN')} VNĐ</strong></p>
+                            <p>Trạng thái: <span class="status status-${statusClass}">${order.status}</span></p>
+                        </div>
+                    </div>
+                `;
+            });
+            orderListDiv.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
