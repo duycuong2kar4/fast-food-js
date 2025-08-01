@@ -1,17 +1,6 @@
-.form-container {
-    max-width: 450px;
-    margin: 2rem auto;
-    padding: 2.5rem;
-    background: var(--white-color);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-    border-radius: 12px;
-}
+.form-container { max-width: 450px; margin: 2rem auto; padding: 2.5rem; background: var(--white-color); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); border-radius: 12px; }
 .form-container h2 { text-align: center; margin-bottom: 2rem; color: var(--text-color); font-weight: 600; }
-.form-container input[type="text"], .form-container input[type="password"] {
-    display: block; width: 100%; padding: 14px; margin-bottom: 1.2rem;
-    border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box;
-    font-size: 1rem; transition: border-color 0.2s, box-shadow 0.2s;
-}
+.form-container input[type="text"], .form-container input[type="password"] { display: block; width: 100%; padding: 14px; margin-bottom: 1.2rem; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; font-size: 1rem; transition: border-color 0.2s, box-shadow 0.2s; }
 .form-container input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.2); }
 .form-container .btn { width: 100%; padding: 14px; font-size: 1.1rem; }
 .form-container hr { margin: 2rem 0; border: 0; border-top: 1px solid #f0f0f0; }

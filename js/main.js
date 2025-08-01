@@ -1,46 +1,76 @@
+document.addEventListener('DOMContentLoaded', function() {
+    initApp();
+    updateHeaderUI();
+    updateCartIcon();
+
+    const productListDiv = document.getElementById('product-list');
+    if (productListDiv) {
+        try {
+            const allProducts = JSON.parse(localStorage.getItem('products')) || [];
+            displayProducts(allProducts);
+
+            const searchInput = document.getElementById('search-input-header');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    const searchTerm = e.target.value.toLowerCase().trim();
+                    const filteredProducts = allProducts.filter(p => p.name.toLowerCase().includes(searchTerm));
+                    displayProducts(filteredProducts);
+                });
+            }
+        } catch (error) {
+            console.error("Lỗi khi hiển thị sản phẩm:", error);
+            productListDiv.innerHTML = "<p>Đã xảy ra lỗi khi tải thực đơn. Vui lòng thử lại.</p>";
+        }
+    }
+});
+
 function initApp() {
-    if (!localStorage.getItem('products')) {
-        localStorage.setItem('products', JSON.stringify(initialData.products));
-    }
-    if (!localStorage.getItem('users')) {
-        localStorage.setItem('users', JSON.stringify(initialData.users));
-    }
-    if (!localStorage.getItem('cart')) {
-        localStorage.setItem('cart', JSON.stringify([]));
-    }
-    if (!localStorage.getItem('orders')) {
-        localStorage.setItem('orders', JSON.stringify([]));
+    try {
+        if (!localStorage.getItem('products')) { localStorage.setItem('products', JSON.stringify(initialData.products)); }
+        if (!localStorage.getItem('users')) { localStorage.setItem('users', JSON.stringify(initialData.users)); }
+        if (!localStorage.getItem('cart')) { localStorage.setItem('cart', JSON.stringify([])); }
+        if (!localStorage.getItem('orders')) { localStorage.setItem('orders', JSON.stringify([])); }
+    } catch (error) {
+        console.error("Lỗi khi khởi tạo dữ liệu:", error);
     }
 }
+
 function updateHeaderUI() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    const authLink = document.getElementById('auth-link');
-    const welcomeMsg = document.getElementById('welcome-msg');
-    const logoutLink = document.getElementById('logout-link');
+    const authLinks = document.querySelectorAll('#auth-link');
+    const welcomeMsgs = document.querySelectorAll('#welcome-msg');
+    const logoutLinks = document.querySelectorAll('#logout-link');
     const userOnlyItems = document.querySelectorAll('.user-only');
     const adminOnlyItems = document.querySelectorAll('.admin-only');
 
     if (currentUser) {
-        if (authLink) authLink.style.display = 'none';
-        if (welcomeMsg) welcomeMsg.textContent = 'Chào, ' + currentUser.username;
+        authLinks.forEach(link => link.style.display = 'none');
         userOnlyItems.forEach(item => item.style.display = 'inline-block');
-        if (currentUser.role === 'admin') {
-            adminOnlyItems.forEach(item => item.style.display = 'inline-block');
-        }
-        if(logoutLink) {
-            logoutLink.addEventListener('click', function(e) {
+        welcomeMsgs.forEach(msg => msg.textContent = 'Chào, ' + currentUser.username);
+        
+        logoutLinks.forEach(link => {
+            const newLink = link.cloneNode(true);
+            link.parentNode.replaceChild(newLink, link);
+            newLink.addEventListener('click', function(e) {
                 e.preventDefault();
                 localStorage.removeItem('currentUser');
                 showToast('Đã đăng xuất.');
                 setTimeout(() => window.location.href = 'index.html', 1000);
             });
+        });
+
+        if (currentUser.role === 'admin') {
+            adminOnlyItems.forEach(item => item.style.display = 'inline-block');
+        } else {
+            adminOnlyItems.forEach(item => item.style.display = 'none');
         }
     } else {
-        if (authLink) authLink.style.display = 'inline-block';
+        authLinks.forEach(link => link.style.display = 'inline-block');
         userOnlyItems.forEach(item => item.style.display = 'none');
         adminOnlyItems.forEach(item => item.style.display = 'none');
     }
 }
+
 function updateCartIcon() {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const cartCount = document.getElementById('cart-count');
@@ -50,14 +80,21 @@ function updateCartIcon() {
     }
 }
 
+function renderStars(rating = 0) {
+    let starsHTML = '';
+    const fullStars = Math.round(rating);
+    for (let i = 0; i < 5; i++) {
+        starsHTML += (i < fullStars) ? '⭐' : '☆';
+    }
+    return starsHTML;
+}
 
-// Trong file js/main.js, thay thế nội dung hàm displayProducts
 function displayProducts(productsToDisplay) {
     const productListDiv = document.getElementById('product-list');
     if (!productListDiv) return;
 
     productListDiv.innerHTML = '';
-    if (productsToDisplay.length === 0) {
+    if (!productsToDisplay || productsToDisplay.length === 0) {
         productListDiv.innerHTML = '<p style="text-align: center; grid-column: 1 / -1;">Không tìm thấy sản phẩm nào.</p>';
         return;
     }
@@ -65,20 +102,19 @@ function displayProducts(productsToDisplay) {
     productsToDisplay.forEach(product => {
         const productCardHTML = `
             <div class="product-card">
-                <!-- Bọc ảnh và thông tin trong một thẻ link -->
                 <a href="product-detail.html?id=${product.id}" class="product-card-link">
                     <div class="product-image-container">
                         <img src="${product.imageUrl}" alt="${product.name}">
                     </div>
                     <div class="product-info">
                         <h3>${product.name}</h3>
+                        <div class="stars">${renderStars(product.avgRating)}</div>
                         <p class="description">${product.description}</p>
                     </div>
                 </a>
-                <!-- Phần footer (giá và nút) nằm ngoài link để nút vẫn hoạt động -->
-                <div class="product-footer">
+                <div class="product-footer" style="padding: 0 1.5rem 1.5rem;">
                     <p class="price">${product.price.toLocaleString('vi-VN')} VNĐ</p>
-                    <button class="btn btn-add-to-cart" onclick="addToCart('${product.id}')">Thêm</button>
+                    <button class="btn-add-to-cart" onclick="addToCart('${product.id}')">Thêm</button>
                 </div>
             </div>
         `;
@@ -86,27 +122,13 @@ function displayProducts(productsToDisplay) {
     });
 }
 
-
 function addToCart(productId) {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     const productInCart = cart.find(item => item.id === productId);
-    if (productInCart) {
-        productInCart.quantity++;
-    } else {
-        cart.push({ id: productId, quantity: 1 });
-    }
+    if (productInCart) { productInCart.quantity++; } else { cart.push({ id: productId, quantity: 1 }); }
     localStorage.setItem('cart', JSON.stringify(cart));
     showToast('Đã thêm sản phẩm vào giỏ hàng!');
     updateCartIcon();
-}
-
-function renderStars(rating = 0) {
-    let starsHTML = '';
-    const fullStars = Math.round(rating);
-    for (let i = 0; i < 5; i++) {
-        starsHTML += (i < fullStars) ? '⭐' : '☆';
-    }
-    return `<div class="stars">${starsHTML}</div>`;
 }
 
 function showToast(message) {
@@ -116,41 +138,9 @@ function showToast(message) {
     toast.className = 'toast';
     toast.textContent = message;
     container.appendChild(toast);
-    setTimeout(() => { toast.classList.add('show'); }, 100);
-    setTimeout(() => { toast.classList.remove('show'); toast.addEventListener('transitionend', () => toast.remove()); }, 3000);
+    setTimeout(() => toast.classList.add('show'), 100);
+    setTimeout(() => {
+        toast.classList.remove('show');
+        toast.addEventListener('transitionend', () => toast.remove());
+    }, 3000);
 }
-
-
-function insertHeader() {
-    const headerPlaceholder = document.getElementById('header-placeholder');
-    if (!headerPlaceholder) return;
-    headerPlaceholder.innerHTML = `<div class="container"><a href="index.html" class="logo">FoodJS</a><nav id="main-nav"><a href="cart.html">Giỏ Hàng (<span id="cart-count">0</span>)</a><a href="history.html" class="nav-item user-only" style="display: none;">Lịch Sử</a><a href="admin.html" class="nav-item admin-only" style="display: none;">Quản Trị</a><a href="login.html" class="nav-item" id="auth-link">Đăng Nhập</a><span class="nav-item user-only" id="welcome-msg" style="display: none;"></span><a href="#" class="nav-item user-only" id="logout-link" style="display: none;">Đăng Xuất</a></nav></div>`;
-}
-
-
-insertHeader();
-
-
-document.addEventListener('DOMContentLoaded', function() {
-
-    initApp();
-    updateHeaderUI();
-    updateCartIcon();
-
- 
-    const productListDiv = document.getElementById('product-list');
-    if (productListDiv) {
-        const allProducts = JSON.parse(localStorage.getItem('products')) || [];
-        
-        displayProducts(allProducts);
-
-        const searchInput = document.getElementById('search-input');
-        if (searchInput) {
-            searchInput.addEventListener('input', function(e) {
-                const searchTerm = e.target.value.toLowerCase().trim();
-                const filteredProducts = allProducts.filter(p => p.name.toLowerCase().includes(searchTerm));
-                displayProducts(filteredProducts);
-            });
-        }
-    }
-});
