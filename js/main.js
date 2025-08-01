@@ -51,31 +51,34 @@ function updateCartIcon() {
 }
 
 
+// Trong file js/main.js, thay thế nội dung hàm displayProducts
 function displayProducts(productsToDisplay) {
     const productListDiv = document.getElementById('product-list');
     if (!productListDiv) return;
 
     productListDiv.innerHTML = '';
-
     if (productsToDisplay.length === 0) {
-        productListDiv.innerHTML = '<p style="text-align: center; grid-column: 1 / -1;">Không tìm thấy sản phẩm nào phù hợp.</p>';
+        productListDiv.innerHTML = '<p style="text-align: center; grid-column: 1 / -1;">Không tìm thấy sản phẩm nào.</p>';
         return;
     }
 
     productsToDisplay.forEach(product => {
         const productCardHTML = `
             <div class="product-card">
-                <div class="product-image-container">
-                    <img src="${product.imageUrl}" alt="${product.name}">
-                </div>
-                <div class="product-info">
-                    <h3>${product.name}</h3>
-                    ${renderStars(product.avgRating)}
-                    <p class="description">${product.description}</p>
-                    <div class="product-footer">
-                        <p class="price">${product.price.toLocaleString('vi-VN')} VNĐ</p>
-                        <button class="btn btn-add-to-cart" onclick="addToCart('${product.id}')">Thêm</button>
+                <!-- Bọc ảnh và thông tin trong một thẻ link -->
+                <a href="product-detail.html?id=${product.id}" class="product-card-link">
+                    <div class="product-image-container">
+                        <img src="${product.imageUrl}" alt="${product.name}">
                     </div>
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p class="description">${product.description}</p>
+                    </div>
+                </a>
+                <!-- Phần footer (giá và nút) nằm ngoài link để nút vẫn hoạt động -->
+                <div class="product-footer">
+                    <p class="price">${product.price.toLocaleString('vi-VN')} VNĐ</p>
+                    <button class="btn btn-add-to-cart" onclick="addToCart('${product.id}')">Thêm</button>
                 </div>
             </div>
         `;

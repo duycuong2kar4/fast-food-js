@@ -51,7 +51,6 @@
             position: relative;
             height: calc(100vh - 106px);
             overflow: hidden;
-            /* THAY ĐỔI TỶ LỆ NỀN TẠI ĐÂY */
             background: linear-gradient(to bottom, var(--secondary-color) 65%, var(--primary-dark-color) 65%);
         }
         
@@ -65,59 +64,64 @@
         .form-container-card {
             position: absolute;
             top: 50%;
-            left: 8%;
+            left: 10%;
             transform: translateY(-50%);
             background-color: var(--primary-color);
             color: var(--white-color);
-            padding: 2.5rem;
-            border-radius: 24px;
+            padding: 1.8rem;
+            border-radius: 20px;
             box-shadow: 0 15px 50px rgba(0,0,0,0.25);
-            width: 38%;
-            max-width: 550px;
+            width: 32%;
+            max-width: 480px;
             height: auto;
             z-index: 5;
         }
-        .form-title { font-size: 30px; font-weight: 700; margin-bottom: 1.5rem; }
-        .register-title { margin-top: 2.5rem; }
+        .form-title { font-size: 26px; font-weight: 700; margin-bottom: 1.2rem; }
+        .register-title { margin-top: 1.8rem; }
         .form-container-card input {
-            width: 100%; height: 59px; background-color: transparent;
-            border: 1px solid var(--white-color); border-radius: 12px;
-            color: var(--white-color); padding: 14px 20px; font-size: 18px;
-            font-family: 'Metropolis', sans-serif; margin-bottom: 1rem;
+            width: 100%; height: 50px; background-color: transparent;
+            border: 1px solid var(--white-color); border-radius: 10px;
+            color: var(--white-color); padding: 10px 18px; font-size: 16px;
+            font-family: 'Metropolis', sans-serif; margin-bottom: 0.8rem;
         }
         .form-container-card input::placeholder { color: rgba(0,0,0,0.4); }
         .btn.btn-yellow {
             background-color: var(--secondary-color); color: var(--primary-color);
-            border: none; width: 100%; height: 59px; font-size: 25px;
+            border: none; width: 100%; height: 50px; font-size: 20px;
             font-weight: 700; font-family: 'Metropolis', sans-serif;
-            border-radius: 12px; cursor: pointer; margin-top: 1rem;
+            border-radius: 10px; cursor: pointer; margin-top: 0.8rem;
         }
         
         .promo-slogan {
             position: absolute;
-            top: 18%;
-            right: 100px;
+            top: 15%;
+            transform: translateY(-50%);
+            right: 5%;
+            width: 40%;
             z-index: 3;
             text-align: left;
         }
         .promo-slogan h1, .promo-slogan h2 {
-            font-size: 56px; font-weight: 700; margin: 0;
-            color: var(--dark-color); line-height: 1.2;
+            font-size: 56px;
+            font-weight: 700;
+            margin: 0;
+            color: var(--dark-color);
+            line-height: 1.2;
         }
         
         .promo-image {
             position: absolute;
-            bottom: -30px;
-            right: -20px;
-            width: 50%;
-            max-width: 720px;
+            bottom: -50px;
+            right: 0;
+            width: 45%;
+            max-width: 680px;
             z-index: 2;
         }
         
         #toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; }
         .toast { /* Toast styles... */ }
 
-        @media (max-width: 1100px) {
+        @media (max-width: 1200px) {
             .promo-slogan, .promo-image { display: none; }
             .login-content-wrapper { display: flex; justify-content: center; align-items: center; }
             .form-container-card { position: static; transform: none; width: 90%; max-width: 500px; }
@@ -151,12 +155,12 @@
                     <button type="submit" class="btn btn-yellow">Đăng Ký</button>
                 </form>
             </div>
-            <div class="promo-slogan">
-                <h1>Bạn có đói không?</h1>
-                <h2>Đặt ngay thôi</h2>
-            </div>
-            <img src="images/login-background.jpg" alt="Hamburger and Coke" class="promo-image">
         </div>
+
+        
+
+        <img src="images/login-background.jpg" alt="Fast food" class="promo-image">
+
     </main>
     <div id="toast-container"></div>
     <script src="js/data.js"></script>
