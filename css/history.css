@@ -11,3 +11,14 @@
 .quick-actions { text-align: center; background-color: #fff3ef; padding: 1.5rem 2rem; border-radius: 12px; margin-bottom: 2.5rem; border: 1px solid #ffe8de; }
 .quick-actions p { margin: 0 0 1rem 0; font-size: 1.1rem; color: #555; }
 .quick-actions .btn-primary { padding: 12px 28px; font-size: 1.1rem; font-weight: bold; box-shadow: 0 4px 12px rgba(255, 87
+    .order-card-link {
+    text-decoration: none; /* Bỏ gạch chân mặc định của thẻ a */
+    color: inherit;        /* Giữ nguyên màu chữ của thẻ con */
+    display: block;        /* Giúp link chiếm trọn không gian */
+    transition: transform 0.2s ease;
+}
+
+.order-card-link:hover .order-card {
+    transform: scale(1.02); /* Phóng to nhẹ khi di chuột vào */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}

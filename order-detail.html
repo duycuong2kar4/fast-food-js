@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Đơn Hàng</title>
+    <!-- Nhúng CSS chung -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Tái sử dụng CSS của trang giỏ hàng để hiển thị danh sách sản phẩm -->
+    <link rel="stylesheet" href="css/cart.css"> 
+    
+    <!-- CSS dành riêng cho trang này -->
+    <style>
+        .order-detail-card {
+            background: var(--white-color);
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            padding: 2rem 2.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .order-info {
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .order-info p { 
+            margin: 0.5rem 0; 
+            font-size: 1.1rem;
+        }
+        /* Ghi đè lại một chút style từ cart.css cho phù hợp */
+        .order-detail-card .cart-item {
+            padding: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <header id="header-placeholder"></header>
+
+    <main>
+        <div class="container">
+            <h1 id="order-title">Chi Tiết Đơn Hàng</h1>
+            <div id="order-detail-container" class="order-detail-card">
+                <p>Đang tải thông tin đơn hàng...</p>
+            </div>
+        </div>
+    </main>
+    
+    <div id="toast-container"></div>
+
+    <!-- Tải các file JS theo đúng thứ tự QUAN TRỌNG -->
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+
+    <!-- Code JS dành riêng cho trang này -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Lấy các tham số từ URL (ví dụ: ...?id=order_12345)
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('id'); // Lấy ra giá trị của 'id'
+
+            // Nếu không có ID trong URL, báo lỗi và dừng lại
+            if (!orderId) {
+                document.getElementById('order-detail-container').innerHTML = '<p>Không tìm thấy mã đơn hàng.</p>';
+                return;
+            }
+
+            // Gọi hàm để hiển thị chi tiết dựa trên ID lấy được
+            displayOrderDetail(orderId);
+        });
+
+        function displayOrderDetail(orderId) {
+            const container = document.getElementById('order-detail-container');
+            const title = document.getElementById('order-title');
+
+            // Lấy dữ liệu cần thiết từ localStorage
+            const allOrders = JSON.parse(localStorage.getItem('orders')) || [];
+            const allProducts = JSON.parse(localStorage.getItem('products')) || [];
+
+            // Tìm chính xác đơn hàng có ID trùng khớp
+            const order = allOrders.find(o => o.id === orderId);
+
+            // Nếu không tìm thấy đơn hàng, báo lỗi
+            if (!order) {
+                container.innerHTML = '<p>Đơn hàng không tồn tại hoặc bạn không có quyền xem.</p>';
+                return;
+            }
+
+            // Cập nhật lại tiêu đề trang cho đẹp hơn
+            title.textContent = `Chi Tiết Đơn Hàng #${order.id.split('_')[1]}`;
+
+            // Tạo phần HTML cho thông tin chung của đơn hàng
+            let orderInfoHTML = `
+                <div class="order-info">
+                    <p><strong>Ngày đặt:</strong> ${new Date(order.date).toLocaleString('vi-VN')}</p>
+                    <p><strong>Khách hàng:</strong> ${order.username}</p>
+                    <p><strong>Trạng thái:</strong> ${order.status}</p>
+                </div>
+                <h4>Các sản phẩm đã đặt:</h4>
+            `;
+
+            // Tạo phần HTML cho danh sách các sản phẩm trong đơn hàng
+            let itemsHTML = '';
+            order.items.forEach(item => {
+                const product = allProducts.find(p => p.id === item.id);
+                if (product) {
+                    itemsHTML += `
+                        <div class="cart-item">
+                            <div class="cart-item-image">
+                                <img src="${product.imageUrl}" alt="${product.name}">
+                            </div>
+                            <div class="cart-item-details">
+                                <h4>${product.name}</h4>
+                                <p>Đơn giá: ${product.price.toLocaleString('vi-VN')} VNĐ</p>
+                            </div>
+                            <div class="cart-item-quantity">
+                                <strong>Số lượng: ${item.quantity}</strong>
+                            </div>
+                            <div class="cart-item-total">
+                                ${(product.price * item.quantity).toLocaleString('vi-VN')} VNĐ
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+        
+            const summaryHTML = `
+                <div class="cart-separator"></div>
+                <div class="cart-summary">
+                    <h2>Tổng cộng: ${order.total.toLocaleString('vi-VN')} VNĐ</h2>
+                    <a href="history.html" class="btn">Quay lại Lịch sử</a>
+                </div>
+            `;
+            container.innerHTML = orderInfoHTML + itemsHTML + summaryHTML;
+        }
+    </script>
+</body>
+</html>

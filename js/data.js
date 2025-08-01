@@ -1,8 +1,5 @@
-// js/data.js (PHIÊN BẢN SỬA LỖI CÚ PHÁP)
-
 const initialData = {
     products: [
-        // --- MÓN ĂN CHÍNH ---
         {
             id: "p1",
             name: "Gà Rán Giòn Cay",
@@ -30,8 +27,8 @@ const initialData = {
             description: "Pizza đế dày phủ đầy tôm, mực và phô mai Mozzarella.",
             imageUrl: "images/pizza.jpg",
             category: "food",
-            ratings: [],
-            avgRating: 0
+             ratings: [5, 4],
+            avgRating: 4.5
         },
         {
             id: "p6",
@@ -40,11 +37,9 @@ const initialData = {
             description: "Sợi mỳ Ý dai ngon hòa quyện cùng sốt cà chua và thịt bò.",
             imageUrl: "images/my-y.jpg",
             category: "food",
-            ratings: [],
-            avgRating: 0
+             ratings: [5, 4],
+            avgRating: 4.5
         },
-
-        // --- MÓN PHỤ & TRÁNG MIỆNG ---
         {
             id: "p3",
             name: "Khoai Tây Chiên (Lớn)",
@@ -62,11 +57,9 @@ const initialData = {
             description: "Salad rau xanh tươi mát kèm sốt dầu giấm chua ngọt.",
             imageUrl: "images/salad.jpg",
             category: "food",
-            ratings: [],
-            avgRating: 0
+             ratings: [5, 4],
+            avgRating: 4.5
         },
-
-        // --- THỨC UỐNG ---
         {
             id: "p4",
             name: "Coca-Cola",
@@ -74,8 +67,8 @@ const initialData = {
             description: "Lon Coca-Cola 330ml mát lạnh, sảng khoái.",
             imageUrl: "images/coca-cola.png",
             category: "drink",
-            ratings: [],
-            avgRating: 0
+             ratings: [5, 4],
+            avgRating: 4.5
         },
         {
             id: "p8",
@@ -84,8 +77,8 @@ const initialData = {
             description: "Chai nước tinh khiết 500ml.",
             imageUrl: "images/nuoc-suoi.jpg",
             category: "drink",
-            ratings: [],
-            avgRating: 0
+             ratings: [5, 4],
+            avgRating: 4.5
         },
         {
             id: "p9",
@@ -94,8 +87,8 @@ const initialData = {
             description: "Ly trà đào thanh mát với những miếng đào giòn ngọt.",
             imageUrl: "images/tra-dao.jpg",
             category: "drink",
-            ratings: [],
-            avgRating: 0
+            ratings: [5, 4],
+            avgRating: 4.5
         }
     ],
     users: [

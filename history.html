@@ -20,7 +20,6 @@
             </div>
 
             <div id="order-list">
-                <!-- JavaScript điền vào đây -->
             </div>
         </div>
     </main>
@@ -56,20 +55,22 @@
 
             let html = '';
             userOrders.forEach(order => {
-                const statusClass = order.status.toLowerCase().replace(/\s+/g, '-');
-                html += `
-                    <div class="order-card">
-                        <div class="order-header">
-                            <h3>Mã đơn hàng: ${order.id}</h3>
-                            <span class="order-date">${new Date(order.date).toLocaleDateString('vi-VN')}</span>
-                        </div>
-                        <div class="order-details">
-                            <p>Tổng tiền: <strong>${order.total.toLocaleString('vi-VN')} VNĐ</strong></p>
-                            <p>Trạng thái: <span class="status status-${statusClass}">${order.status}</span></p>
-                        </div>
-                    </div>
-                `;
-            });
+    const statusClass = order.status.toLowerCase().replace(/\s+/g, '-');
+    html += `
+        <a href="order-detail.html?id=${order.id}" class="order-card-link">
+            <div class="order-card">
+                <div class="order-header">
+                    <h3>Mã đơn hàng: #${order.id.split('_')[1]}</h3>
+                    <span class="order-date">${new Date(order.date).toLocaleDateString('vi-VN')}</span>
+                </div>
+                <div class="order-details">
+                    <p>Tổng tiền: <strong>${order.total.toLocaleString('vi-VN')} VNĐ</strong></p>
+                    <p>Trạng thái: <span class="status status-${statusClass}">${order.status}</span></p>
+                </div>
+            </div>
+        </a>
+    `;
+});
             orderListDiv.innerHTML = html;
         }
     </script>

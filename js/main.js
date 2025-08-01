@@ -1,12 +1,3 @@
-// js/main.js (PHIÊN BẢN SỬA LỖI HIỂN THỊ)
-
-// ==========================================================
-// CÁC HÀM ĐƯỢC ĐỊNH NGHĨA Ở ĐÂY TRƯỚC
-// ==========================================================
-
-/**
- * Khởi tạo dữ liệu trong localStorage nếu chưa có
- */
 function initApp() {
     if (!localStorage.getItem('products')) {
         localStorage.setItem('products', JSON.stringify(initialData.products));
@@ -21,13 +12,8 @@ function initApp() {
         localStorage.setItem('orders', JSON.stringify([]));
     }
 }
-
-/**
- * Cập nhật giao diện header dựa trên trạng thái đăng nhập
- */
 function updateHeaderUI() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    // ... (Toàn bộ nội dung của hàm này giữ nguyên như cũ)
     const authLink = document.getElementById('auth-link');
     const welcomeMsg = document.getElementById('welcome-msg');
     const logoutLink = document.getElementById('logout-link');
@@ -55,10 +41,6 @@ function updateHeaderUI() {
         adminOnlyItems.forEach(item => item.style.display = 'none');
     }
 }
-
-/**
- * Cập nhật số lượng sản phẩm trên icon giỏ hàng
- */
 function updateCartIcon() {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const cartCount = document.getElementById('cart-count');
@@ -68,10 +50,7 @@ function updateCartIcon() {
     }
 }
 
-/**
- * Hiển thị danh sách sản phẩm được cung cấp ra màn hình
- * @param {Array} productsToDisplay - Mảng sản phẩm cần hiển thị
- */
+
 function displayProducts(productsToDisplay) {
     const productListDiv = document.getElementById('product-list');
     if (!productListDiv) return;
@@ -104,9 +83,7 @@ function displayProducts(productsToDisplay) {
     });
 }
 
-/**
- * Thêm sản phẩm vào giỏ hàng
- */
+
 function addToCart(productId) {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     const productInCart = cart.find(item => item.id === productId);
@@ -120,9 +97,6 @@ function addToCart(productId) {
     updateCartIcon();
 }
 
-/**
- * Tạo HTML cho các ngôi sao đánh giá
- */
 function renderStars(rating = 0) {
     let starsHTML = '';
     const fullStars = Math.round(rating);
@@ -132,9 +106,6 @@ function renderStars(rating = 0) {
     return `<div class="stars">${starsHTML}</div>`;
 }
 
-/**
- * Hiển thị thông báo toast
- */
 function showToast(message) {
     const container = document.getElementById('toast-container');
     if (!container) return;
@@ -147,28 +118,23 @@ function showToast(message) {
 }
 
 
-// ==========================================================
-// ĐẶT CÁC HÀM CHÈN HEADER VÀ SỰ KIỆN CHÍNH Ở CUỐI CÙNG
-// ==========================================================
-
-// Hàm này chạy ngay khi file JS được tải để chèn header vào ngay lập tức.
 function insertHeader() {
     const headerPlaceholder = document.getElementById('header-placeholder');
     if (!headerPlaceholder) return;
     headerPlaceholder.innerHTML = `<div class="container"><a href="index.html" class="logo">FoodJS</a><nav id="main-nav"><a href="cart.html">Giỏ Hàng (<span id="cart-count">0</span>)</a><a href="history.html" class="nav-item user-only" style="display: none;">Lịch Sử</a><a href="admin.html" class="nav-item admin-only" style="display: none;">Quản Trị</a><a href="login.html" class="nav-item" id="auth-link">Đăng Nhập</a><span class="nav-item user-only" id="welcome-msg" style="display: none;"></span><a href="#" class="nav-item user-only" id="logout-link" style="display: none;">Đăng Xuất</a></nav></div>`;
 }
 
-// Chạy hàm chèn header ngay
+
 insertHeader();
 
-// Sự kiện DOMContentLoaded đảm bảo toàn bộ HTML đã được tải xong trước khi chạy code bên trong
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Các hàm này cần chạy trên MỌI trang
+
     initApp();
     updateHeaderUI();
     updateCartIcon();
 
-    // Logic chỉ dành riêng cho trang chủ
+ 
     const productListDiv = document.getElementById('product-list');
     if (productListDiv) {
         const allProducts = JSON.parse(localStorage.getItem('products')) || [];
