@@ -1,4 +1,4 @@
-// js/profile.js (PHIÊN BẢN SỬA LỖI)
+
 document.addEventListener('DOMContentLoaded', function() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (!currentUser) {

@@ -1,19 +1,15 @@
-// js/main.js (PHIÊN BẢN SỬA LỖI CUỐI CÙNG)
+
 
 document.addEventListener('DOMContentLoaded', function() {
     initApp();
     updateHeaderUI();
     updateCartIcon();
-
-    // Logic chỉ dành riêng cho trang chủ
+      
     const productListDiv = document.getElementById('product-list');
     if (productListDiv) {
         try {
             const allProducts = JSON.parse(localStorage.getItem('products')) || [];
-            displayProducts(allProducts); // Hiển thị tất cả sản phẩm ban đầu
-
-            // Gắn sự kiện cho ô tìm kiếm trên header
-            // Lưu ý: ID của ô tìm kiếm trên trang chủ là "search-input"
+            displayProducts(allProducts); 
             const searchInput = document.getElementById('search-input'); 
             if (searchInput) {
                 searchInput.addEventListener('input', function(e) {

@@ -1,6 +1,6 @@
 .form-container {
     padding: 2rem;
-    background: transparent; /* Form sẽ nằm trong .card nên không cần nền riêng */
+    background: transparent; 
     box-shadow: none;
     max-width: 100%;
 }

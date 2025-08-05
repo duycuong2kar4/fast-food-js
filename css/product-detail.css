@@ -1,7 +1,7 @@
 .product-detail-layout {
     display: flex;
     gap: 3rem;
-    padding: 0; /* Nội dung đã nằm trong .card */
+    padding: 0; 
 }
 .product-detail-image { flex: 1; max-width: 500px; }
 .product-detail-image img { width: 100%; border-radius: 8px; }

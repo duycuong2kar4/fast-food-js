@@ -1,28 +1,26 @@
-// js/cart.js (PHIÊN BẢN HOÀN CHỈNH)
+
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Kiểm tra đăng nhập trước khi thực hiện bất kỳ hành động nào
+   
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (!currentUser) {
-        // Sử dụng hàm showToast từ main.js nếu có
+        
         if (typeof showToast === 'function') {
             showToast("Vui lòng đăng nhập để xem giỏ hàng.");
         } else {
             alert("Vui lòng đăng nhập để xem giỏ hàng.");
         }
-        // Chuyển hướng về trang đăng nhập
+        
         setTimeout(() => window.location.href = 'login.html', 1500);
-        return; // Dừng thực thi script nếu chưa đăng nhập
+        return; 
     }
     
-    // Nếu đã đăng nhập, tiếp tục hiển thị nội dung
+  
     displayCart();
     displayShippingAddressOptions();
 });
 
-/**
- * Hiển thị toàn bộ giỏ hàng ra màn hình
- */
+
 function displayCart() {
     const cartContainer = document.getElementById('cart-container');
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -38,7 +36,7 @@ function displayCart() {
             </div>
         `;
         cartContainer.innerHTML = emptyHTML;
-        // Ẩn khu vực địa chỉ nếu giỏ hàng trống
+       
         const shippingContainer = document.getElementById('shipping-address-container');
         if (shippingContainer) {
             shippingContainer.style.display = 'none';
@@ -94,16 +92,14 @@ function displayCart() {
     cartContainer.innerHTML = fullCartHTML;
 }
 
-/**
- * Hiển thị các lựa chọn địa chỉ giao hàng
- */
+
 function displayShippingAddressOptions() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const shippingContainer = document.getElementById('shipping-address-container');
     const addressOptionsDiv = document.getElementById('address-options');
 
-    // Chỉ hiển thị khu vực địa chỉ nếu đã đăng nhập VÀ giỏ hàng có sản phẩm
+   
     if (currentUser && cart.length > 0) {
         shippingContainer.style.display = 'block';
         
@@ -130,7 +126,7 @@ function displayShippingAddressOptions() {
 }
 
 /**
- * Thay đổi số lượng sản phẩm trong giỏ hàng
+ 
  * @param {string} productId 
  * @param {number} amount 
  */
@@ -139,8 +135,8 @@ function changeQuantity(productId, amount) {
     const itemInCart = cart.find(item => item.id === productId);
     if (itemInCart) {
         if (amount === -1 && itemInCart.quantity === 1) {
-            // Nếu số lượng là 1 và nhấn giảm, thì xóa sản phẩm
-            removeFromCart(productId, true); // true để bỏ qua confirm
+            
+            removeFromCart(productId, true); 
             return;
         }
         itemInCart.quantity += amount;
@@ -151,7 +147,6 @@ function changeQuantity(productId, amount) {
 }
 
 /**
- * Xóa một sản phẩm khỏi giỏ hàng
  * @param {string} productId 
  * @param {boolean} skipConfirm 
  */
@@ -163,13 +158,11 @@ function removeFromCart(productId, skipConfirm = false) {
     cart = cart.filter(item => item.id !== productId);
     localStorage.setItem('cart', JSON.stringify(cart));
     displayCart();
-    displayShippingAddressOptions(); // Cập nhật lại khu vực địa chỉ (để ẩn đi nếu giỏ hàng trống)
+    displayShippingAddressOptions(); 
     updateCartIcon();
 }
 
-/**
- * Xử lý việc đặt hàng
- */
+
 function placeOrder() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     const cart = JSON.parse(localStorage.getItem('cart'));
