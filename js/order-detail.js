@@ -1,4 +1,4 @@
-// js/order-detail.js (PHIÊN BẢN SỬA LỖI HOÀN CHỈNH)
+
 
 document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -25,7 +25,6 @@ function displayOrderDetail(orderId) {
 
     title.textContent = `Chi Tiết Đơn Hàng #${order.id.split('_')[1]}`;
     
-    // Tạo HTML cho thông tin chung
     let orderInfoHTML = `
         <div class="order-info">
             <p><strong>Ngày đặt:</strong> ${new Date(order.date).toLocaleString('vi-VN')}</p>
@@ -36,14 +35,13 @@ function displayOrderDetail(orderId) {
         <h4>Các sản phẩm đã đặt:</h4>
     `;
 
-    // ==========================================================
-    // === SỬA LỖI VÀ BỔ SUNG LẠI CODE TẠO DANH SÁCH SẢN PHẨM ===
-    // ==========================================================
+    
+    
     let itemsHTML = '';
     order.items.forEach(item => {
         const product = allProducts.find(p => p.id === item.id);
         if (product) {
-            // Tái sử dụng class .cart-item từ CSS của giỏ hàng
+            
             itemsHTML += `
                 <div class="cart-item">
                     <div class="cart-item-image">
@@ -64,7 +62,6 @@ function displayOrderDetail(orderId) {
         }
     });
 
-    // Tạo HTML cho phần tổng kết
     const summaryHTML = `
         <div class="cart-separator"></div>
         <div class="cart-summary">
@@ -73,6 +70,6 @@ function displayOrderDetail(orderId) {
         </div>
     `;
 
-    // Ghép tất cả lại và hiển thị
+    
     container.innerHTML = orderInfoHTML + itemsHTML + summaryHTML;
 }
