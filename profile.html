@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giỏ Hàng - FoodJS</title>
+    <title>Thông Tin Cá Nhân</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Metropolis:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/cart.css">
+    <link rel="stylesheet" href="css/form.css">
 </head>
 <body>
     <div class="background-shapes"><div class="shape shape-red"></div></div>
@@ -26,22 +26,27 @@
     </header>
     <main>
         <div class="container">
-            <h1>Giỏ Hàng Của Bạn</h1>
-            <div id="cart-container" class="card">
-                <!-- JS điền danh sách sản phẩm -->
-            </div>
-            <div id="shipping-address-container" class="card" style="margin-top: 2rem; display:none;">
-                <h2>Chọn địa chỉ giao hàng</h2>
-                <div id="address-options">
-                    <!-- JS điền các lựa chọn địa chỉ -->
-                </div>
-                <a href="profile.html" style="font-size: 0.9rem; margin-top: 1rem; display: inline-block;">Thêm hoặc quản lý địa chỉ</a>
+            <h1>Thông Tin Cá Nhân</h1>
+            <div class="profile-container card">
+                 <h2>Địa chỉ giao hàng của bạn</h2>
+                 <button id="show-address-form-btn" class="btn">Thêm địa chỉ mới</button>
+                 <form id="address-form" style="display: none; margin-top: 1.5rem;">
+                    <h3>Thêm Địa Chỉ Mới</h3>
+                    <input type="text" id="address-fullname" placeholder="Họ và Tên" required>
+                    <input type="text" id="address-phone" placeholder="Số điện thoại" required>
+                    <textarea id="address-details" placeholder="Địa chỉ chi tiết (số nhà, đường...)" required style="width: 100%; min-height: 80px; padding: 10px; font-size: 1rem; border-radius: 5px; border: 1px solid #ddd;"></textarea>
+                    <div class="form-actions" style="display: flex; gap: 1rem; margin-top: 1rem;">
+                        <button type="submit" class="btn">Lưu</button>
+                        <button type="button" id="cancel-address-btn" class="btn btn-danger">Hủy</button>
+                    </div>
+                </form>
+                 <div id="address-list" style="margin-top: 2rem;"></div>
             </div>
         </div>
     </main>
     <div id="toast-container"></div>
     <script src="js/data.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/cart.js"></script>
+    <script src="js/profile.js"></script>
 </body>
 </html>

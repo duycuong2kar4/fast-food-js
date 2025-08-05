@@ -4,75 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lịch Sử Mua Hàng</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Metropolis:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/history.css">
 </head>
 <body>
-    <header id="header-placeholder"></header>
-
+    <div class="background-shapes"><div class="shape shape-red"></div></div>
+    <header>
+        <a href="index.html" class="logo">FoodJS</a>
+        <nav id="main-nav">
+             <a href="cart.html">Giỏ Hàng (<span id="cart-count">0</span>)</a>
+             <a href="history.html" class="nav-item user-only" style="display: none;">Lịch Sử</a>
+             <a href="profile.html" class="nav-item user-only" style="display: none;">Tài Khoản</a>
+             <a href="admin.html" class="nav-item admin-only" style="display: none;">Quản Trị</a>
+             <a href="login.html" class="nav-item" id="auth-link">Đăng Nhập</a>
+             <span class="nav-item user-only" id="welcome-msg" style="display: none;"></span>
+             <a href="#" class="nav-item user-only" id="logout-link" style="display: none;">Đăng Xuất</a>
+        </nav>
+    </header>
     <main>
         <div class="container">
             <h1>Lịch Sử Mua Hàng</h1>
-
-            <div class="quick-actions">
-                <p>Bạn muốn thưởng thức lại những món ăn tuyệt vời?</p>
-                <a href="index.html" class="btn btn-primary">Xem Thực Đơn & Đặt Hàng Ngay</a>
-            </div>
-
             <div id="order-list">
+                <!-- JS điền các thẻ đơn hàng vào đây -->
             </div>
         </div>
     </main>
-    
     <div id="toast-container"></div>
     <script src="js/data.js"></script>
     <script src="js/main.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            if (!currentUser || !currentUser.id) {
-                showToast("Vui lòng đăng nhập để xem lịch sử mua hàng.");
-                setTimeout(() => window.location.href = 'login.html', 1500);
-                return;
-            }
-            displayOrderHistory(currentUser.id);
-        });
-
-        function displayOrderHistory(userId) {
-            const orderListDiv = document.getElementById('order-list');
-            orderListDiv.classList.add('order-list-container');
-            
-            const allOrders = JSON.parse(localStorage.getItem('orders')) || [];
-            const userOrders = allOrders.filter(order => order.userId === userId);
-
-            if (userOrders.length === 0) {
-                const emptyHTML = `<div class="empty-state"><p>Bạn chưa có đơn hàng nào.</p></div>`;
-                orderListDiv.innerHTML = emptyHTML;
-                return;
-            }
-
-            userOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-            let html = '';
-            userOrders.forEach(order => {
-    const statusClass = order.status.toLowerCase().replace(/\s+/g, '-');
-    html += `
-        <a href="order-detail.html?id=${order.id}" class="order-card-link">
-            <div class="order-card">
-                <div class="order-header">
-                    <h3>Mã đơn hàng: #${order.id.split('_')[1]}</h3>
-                    <span class="order-date">${new Date(order.date).toLocaleDateString('vi-VN')}</span>
-                </div>
-                <div class="order-details">
-                    <p>Tổng tiền: <strong>${order.total.toLocaleString('vi-VN')} VNĐ</strong></p>
-                    <p>Trạng thái: <span class="status status-${statusClass}">${order.status}</span></p>
-                </div>
-            </div>
-        </a>
-    `;
-});
-            orderListDiv.innerHTML = html;
-        }
-    </script>
+    <script src="js/history.js"></script>
 </body>
 </html>

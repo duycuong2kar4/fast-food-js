@@ -1,24 +1,18 @@
-.order-list-container { max-width: 800px; margin: 0 auto; }
-.order-card { background-color: var(--white-color); padding: 1.5rem 2rem; border-radius: 10px; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07); border-left: 5px solid var(--primary-color); }
-.order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid #f0f0f0; padding-bottom: 1rem; }
-.order-header h3 { margin: 0; font-size: 1.1rem; color: var(--text-color); }
-.order-header .order-date { font-size: 0.9rem; color: #777; }
+.order-card {
+    margin-bottom: 1.5rem;
+}
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 1rem;
+}
+.order-header h3 { margin: 0; }
 .order-details p { margin: 0.5rem 0; }
-.status { font-weight: bold; padding: 4px 12px; border-radius: 20px; color: var(--white-color); font-size: 0.85rem; display: inline-block; }
+.status { font-weight: bold; padding: 4px 12px; border-radius: 20px; color: var(--white-color); font-size: 0.85rem; }
 .status-dang-xu-ly { background-color: #ffc107; color: #333; }
 .status-hoan-thanh { background-color: #28a745; }
 .status-da-huy { background-color: #dc3545; }
-.quick-actions { text-align: center; background-color: #fff3ef; padding: 1.5rem 2rem; border-radius: 12px; margin-bottom: 2.5rem; border: 1px solid #ffe8de; }
-.quick-actions p { margin: 0 0 1rem 0; font-size: 1.1rem; color: #555; }
-.quick-actions .btn-primary { padding: 12px 28px; font-size: 1.1rem; font-weight: bold; box-shadow: 0 4px 12px rgba(255, 87
-    .order-card-link {
-    text-decoration: none; /* Bỏ gạch chân mặc định của thẻ a */
-    color: inherit;        /* Giữ nguyên màu chữ của thẻ con */
-    display: block;        /* Giúp link chiếm trọn không gian */
-    transition: transform 0.2s ease;
-}
-
-.order-card-link:hover .order-card {
-    transform: scale(1.02); /* Phóng to nhẹ khi di chuột vào */
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-}
+.order-actions { margin-top: 1.5rem; display: flex; gap: 1rem; }

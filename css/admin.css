@@ -1,29 +1,13 @@
-.tab-bar { border-bottom: 2px solid #eee; margin-bottom: 2rem; }
-.tab-bar button { padding: 1rem 1.5rem; font-size: 1.1rem; font-weight: 600; border: none; background-color: transparent; cursor: pointer; color: #888; position: relative; top: 2px; border-bottom: 2px solid transparent; }
+.tab-bar { border-bottom: 2px solid #eee; margin-bottom: 20px; }
+.tab-bar button { padding: 1rem 1.5rem; font-size: 1.1rem; font-weight: 600; border: none; background-color: transparent; cursor: pointer; color: var(--text-light-color); border-bottom: 2px solid transparent; }
 .tab-bar button:hover { color: var(--primary-color); }
 .tab-bar button.active { color: var(--primary-color); border-bottom-color: var(--primary-color); }
-.tab-content { display: none; }
+.tab-content { display: none; padding-top: 1rem; }
 .admin-table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; background: var(--white-color); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07); border-radius: 8px; overflow: hidden; }
 .admin-table th, .admin-table td { padding: 15px; text-align: left; border-bottom: 1px solid #f0f0f0; }
 .admin-table th { background-color: #f9f9f9; font-weight: 600; }
 .admin-table tr:last-child td { border-bottom: none; }
-.admin-table tr:hover { background-color: #fdf5f2; }
-.admin-form { margin-top: 1.5rem; padding: 2rem; background: #f9f9f9; border: 1px solid #eee; border-radius: 8px; }
-.admin-form input, .admin-form textarea, .admin-form select { width: 100%; padding: 12px; margin-bottom: 1rem; box-sizing: border-box; border-radius: 6px; border: 1px solid #ddd; }
-.admin-form textarea { min-height: 100px; resize: vertical; }
-.form-actions::after { 
-    content: "";
-    display: table;
-    clear: both;
-}
-
-.form-actions .btn:first-child { /* Nút "Lưu sản phẩm" */
-    float: left;
-}
-
-.form-actions .btn:last-child { /* Nút "Hủy" */
-    float: right;
-}
-/* Nút */
-.admin-table .btn { padding: 6px 12px; font-size: 0.9rem; }
-.admin-form .btn { font-size: 1rem; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; }
+.stat-card { background-color: var(--white-color); padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+.stat-card h4 { margin-top: 0; color: #555; }
+.stat-card p { font-size: 2rem; font-weight: bold; color: var(--primary-color); margin-bottom: 0; }

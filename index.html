@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Metropolis:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="home-page">
     <div class="background-shapes">
         <div class="shape shape-red"></div>
     </div>
@@ -18,26 +18,26 @@
         <nav id="main-nav">
              <a href="cart.html">Giỏ Hàng (<span id="cart-count">0</span>)</a>
              <a href="history.html" class="nav-item user-only" style="display: none;">Lịch Sử</a>
+             <a href="profile.html" class="nav-item user-only" style="display: none;">Tài Khoản</a>
              <a href="admin.html" class="nav-item admin-only" style="display: none;">Quản Trị</a>
              <a href="login.html" class="nav-item" id="auth-link">Đăng Nhập</a>
              <span class="nav-item user-only" id="welcome-msg" style="display: none;"></span>
              <a href="#" class="nav-item user-only" id="logout-link" style="display: none;">Đăng Xuất</a>
         </nav>
         <div class="search-box">
-             <input type="text" id="search-input-header" placeholder="Tìm kiếm">
+             <!-- SỬA ID Ở ĐÂY -->
+             <input type="text" id="search-input" placeholder="Tìm kiếm">
              <img src="images/search-icon.svg" alt="Search Icon" class="search-icon">
         </div>
     </header>
     <main>
         <div class="container">
+            <!-- Xóa bộ lọc sắp xếp khỏi HTML, vì JS trang chủ cũ không có -->
             <h1 class="main-title">THỰC ĐƠN CỦA CHÚNG TÔI</h1>
-            <div id="product-list" class="product-grid">
-                <!-- JS sẽ điền vào đây -->
-            </div>
+            <div id="product-list" class="product-grid"></div>
         </div>
     </main>
     <div id="toast-container"></div>
-    <!-- THỨ TỰ SCRIPT RẤT QUAN TRỌNG -->
     <script src="js/data.js"></script>
     <script src="js/main.js"></script>
 </body>
