@@ -1,7 +1,6 @@
-
+// js/admin.js
 
 document.addEventListener('DOMContentLoaded', function() {
-    
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (!currentUser || currentUser.role !== 'admin') {
         alert('Truy cập bị từ chối. Bạn không phải là quản trị viên.');
@@ -9,13 +8,11 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-   
-    generateStatistics();
     displayAdminProducts();
     displayAdminOrders();
     displayUsers();
+    generateStatistics();
 
-    
     const productForm = document.getElementById('product-form');
     if (productForm) {
         productForm.addEventListener('submit', handleProductFormSubmit);
@@ -27,41 +24,27 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-/**
- * @param {Event} evt 
- * @param {string} tabName 
- */
 function openTab(evt, tabName) {
     let i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tab-content");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
+    for (i = 0; i < tabcontent.length; i++) { tabcontent[i].style.display = "none"; }
     tablinks = document.getElementsByClassName("tab-link");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
+    for (i = 0; i < tablinks.length; i++) { tablinks[i].className = tablinks[i].className.replace(" active", ""); }
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active";
 }
-
 
 function generateStatistics() {
     const orders = JSON.parse(localStorage.getItem('orders')) || [];
     const users = JSON.parse(localStorage.getItem('users')) || [];
     const products = JSON.parse(localStorage.getItem('products')) || [];
- 
+    
     const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
     document.getElementById('total-revenue').textContent = totalRevenue.toLocaleString('vi-VN') + ' VNĐ';
-
-  
     document.getElementById('total-orders').textContent = orders.length;
-
-   
     const totalCustomers = users.filter(u => u.role === 'customer').length;
     document.getElementById('total-customers').textContent = totalCustomers;
 
-   
     const allItems = orders.flatMap(order => order.items);
     if (allItems.length > 0) {
         const itemCounts = allItems.reduce((counts, item) => {
@@ -73,7 +56,6 @@ function generateStatistics() {
         document.getElementById('best-seller').textContent = bestSeller ? bestSeller.name : 'Chưa có';
     }
 }
-
 
 function displayAdminProducts() {
     const products = JSON.parse(localStorage.getItem('products')) || [];
@@ -95,10 +77,8 @@ function displayAdminProducts() {
     });
 }
 
-
 function showAddForm() {
     const productForm = document.getElementById('product-form');
-    
     productForm.innerHTML = `
         <h3 id="form-title">Thêm sản phẩm mới</h3>
         <input type="hidden" id="product-id">
@@ -112,17 +92,14 @@ function showAddForm() {
         </div>
     `;
     productForm.style.display = 'block';
-    
     document.getElementById('cancel-edit-btn').addEventListener('click', hideProductForm);
 }
-
 
 function hideProductForm() {
     const productForm = document.getElementById('product-form');
     productForm.style.display = 'none';
     productForm.innerHTML = ''; 
 }
-
 
 function handleProductFormSubmit(e) {
     e.preventDefault();
@@ -133,36 +110,33 @@ function handleProductFormSubmit(e) {
         price: parseInt(document.getElementById('product-price').value),
         imageUrl: document.getElementById('product-image').value,
     };
-
     let products = JSON.parse(localStorage.getItem('products')) || [];
-    if (id) { 
+    if (id) {
         const index = products.findIndex(p => p.id === id);
         if (index !== -1) {
             products[index] = { ...products[index], ...newProductData };
         }
-    } else { 
+    } else {
         const newProduct = {
             id: 'p' + Date.now(),
             ...newProductData,
-            category: "food", 
+            category: "food",
             ratings: [],
             avgRating: 0
         };
         products.push(newProduct);
     }
-
     localStorage.setItem('products', JSON.stringify(products));
     showToast(id ? "Đã cập nhật sản phẩm!" : "Đã thêm sản phẩm mới!");
     displayAdminProducts();
     hideProductForm();
 }
 
-
 function editProduct(productId) {
     const products = JSON.parse(localStorage.getItem('products')) || [];
     const product = products.find(p => p.id === productId);
     if (product) {
-        showAddForm(); 
+        showAddForm();
         document.getElementById('form-title').innerText = 'Sửa sản phẩm';
         document.getElementById('product-id').value = product.id;
         document.getElementById('product-name').value = product.name;
@@ -172,7 +146,6 @@ function editProduct(productId) {
     }
 }
 
-
 function deleteProduct(productId) {
     if (!confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) return;
     let products = JSON.parse(localStorage.getItem('products')) || [];
@@ -181,7 +154,6 @@ function deleteProduct(productId) {
     showToast("Đã xóa sản phẩm.");
     displayAdminProducts();
 }
-
 
 function displayAdminOrders() {
     const orders = JSON.parse(localStorage.getItem('orders')) || [];
@@ -210,7 +182,6 @@ function displayAdminOrders() {
     });
 }
 
-
 function updateOrderStatus(orderId, newStatus) {
     let orders = JSON.parse(localStorage.getItem('orders')) || [];
     const order = orders.find(o => o.id === orderId);
@@ -220,7 +191,6 @@ function updateOrderStatus(orderId, newStatus) {
         showToast("Đã cập nhật trạng thái đơn hàng.");
     }
 }
-
 
 function displayUsers() {
     const users = JSON.parse(localStorage.getItem('users')) || [];
@@ -243,19 +213,14 @@ function displayUsers() {
 }
 
 function deleteUser(userId) {
-    if (!confirm("Bạn có chắc muốn xóa người dùng này? Thao tác này cũng sẽ xóa các đơn hàng liên quan.")) return;
-    
-    
+    if (!confirm("Bạn có chắc muốn xóa người dùng này?")) return;
     let users = JSON.parse(localStorage.getItem('users')) || [];
     users = users.filter(user => user.id !== userId);
     localStorage.setItem('users', JSON.stringify(users));
-    
-   
     let orders = JSON.parse(localStorage.getItem('orders')) || [];
     orders = orders.filter(order => order.userId !== userId);
     localStorage.setItem('orders', JSON.stringify(orders));
-
     showToast("Đã xóa người dùng và các đơn hàng liên quan.");
     displayUsers();
-    generateStatistics(); 
+    generateStatistics();
 }

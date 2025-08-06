@@ -1,5 +1,3 @@
-
-
 document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     const orderId = urlParams.get('id');
@@ -15,7 +13,6 @@ function displayOrderDetail(orderId) {
     const title = document.getElementById('order-title');
     const allOrders = JSON.parse(localStorage.getItem('orders')) || [];
     const allProducts = JSON.parse(localStorage.getItem('products')) || [];
-
     const order = allOrders.find(o => o.id === orderId);
 
     if (!order) {
@@ -32,16 +29,12 @@ function displayOrderDetail(orderId) {
             <p><strong>Trạng thái:</strong> ${order.status}</p>
             <p><strong>Địa chỉ giao:</strong> ${order.shippingAddress.details} - ${order.shippingAddress.phone}</p>
         </div>
-        <h4>Các sản phẩm đã đặt:</h4>
-    `;
-
-    
-    
+        <h4>Các sản phẩm đã đặt:</h4>`;
+        
     let itemsHTML = '';
     order.items.forEach(item => {
         const product = allProducts.find(p => p.id === item.id);
         if (product) {
-            
             itemsHTML += `
                 <div class="cart-item">
                     <div class="cart-item-image">
@@ -67,9 +60,7 @@ function displayOrderDetail(orderId) {
         <div class="cart-summary">
             <h2>Tổng cộng: ${order.total.toLocaleString('vi-VN')} VNĐ</h2>
             <a href="history.html" class="btn">Quay lại Lịch sử</a>
-        </div>
-    `;
-
+        </div>`;
     
     container.innerHTML = orderInfoHTML + itemsHTML + summaryHTML;
 }

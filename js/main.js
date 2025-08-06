@@ -1,16 +1,14 @@
-
-
 document.addEventListener('DOMContentLoaded', function() {
     initApp();
     updateHeaderUI();
     updateCartIcon();
-      
     const productListDiv = document.getElementById('product-list');
     if (productListDiv) {
         try {
             const allProducts = JSON.parse(localStorage.getItem('products')) || [];
-            displayProducts(allProducts); 
-            const searchInput = document.getElementById('search-input'); 
+            displayProducts(allProducts);
+
+            const searchInput = document.getElementById('search-input-header');
             if (searchInput) {
                 searchInput.addEventListener('input', function(e) {
                     const searchTerm = e.target.value.toLowerCase().trim();
@@ -19,10 +17,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         } catch (error) {
-            console.error("Lỗi khi hiển thị sản phẩm:", error);
+            console.error("Lỗi khi chạy logic trang chủ:", error);
             productListDiv.innerHTML = "<p>Đã xảy ra lỗi khi tải thực đơn.</p>";
         }
     }
+
+    // Gán sự kiện click cho menu dropdown
+    const userMenuToggle = document.getElementById('user-menu-toggle');
+    if (userMenuToggle) {
+        userMenuToggle.addEventListener('click', function(event) {
+            event.stopPropagation();
+            document.querySelector('.dropdown-content').classList.toggle('show');
+        });
+    }
+    window.addEventListener('click', function(event) {
+        if (!event.target.closest('.user-menu')) {
+            document.querySelectorAll('.dropdown-content.show').forEach(dropdown => {
+                dropdown.classList.remove('show');
+            });
+        }
+    });
 });
 
 function initApp() {
@@ -42,14 +56,25 @@ function initApp() {
 function updateHeaderUI() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     const authLink = document.getElementById('auth-link');
+    const userMenuToggle = document.getElementById('user-menu-toggle');
     const welcomeMsg = document.getElementById('welcome-msg');
-    const logoutLink = document.getElementById('logout-link');
     const userOnlyItems = document.querySelectorAll('.user-only');
     const adminOnlyItems = document.querySelectorAll('.admin-only');
+
     if (currentUser) {
-        if (authLink) authLink.style.display = 'none';
-        userOnlyItems.forEach(item => item.style.display = 'inline-block');
-        if (welcomeMsg) welcomeMsg.textContent = 'Chào, ' + currentUser.username;
+        if(authLink) authLink.style.display = 'none';
+        
+        userOnlyItems.forEach(item => {
+            if (item.id === 'user-menu-toggle') {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'inline-block';
+            }
+        });
+        
+        if(welcomeMsg) welcomeMsg.textContent = 'Chào, ' + currentUser.username;
+        
+        const logoutLink = document.getElementById('logout-link');
         if(logoutLink) {
             const newLogoutLink = logoutLink.cloneNode(true);
             logoutLink.parentNode.replaceChild(newLogoutLink, logoutLink);
@@ -60,15 +85,19 @@ function updateHeaderUI() {
                 setTimeout(() => window.location.href = 'index.html', 1000);
             });
         }
+
         if (currentUser.role === 'admin') {
             adminOnlyItems.forEach(item => item.style.display = 'inline-block');
         } else {
             adminOnlyItems.forEach(item => item.style.display = 'none');
         }
     } else {
-        if (authLink) authLink.style.display = 'inline-block';
-        userOnlyItems.forEach(item => item.style.display = 'none');
-        adminOnlyItems.forEach(item => item.style.display = 'none');
+        if(authLink) authLink.style.display = 'block';
+        if(userMenuToggle) userMenuToggle.style.display = 'none';
+        
+        document.querySelectorAll('.nav-item.user-only, .nav-item.admin-only').forEach(item => {
+            item.style.display = 'none';
+        });
     }
 }
 
@@ -102,18 +131,21 @@ function displayProducts(productsToDisplay) {
         const productCardHTML = `
             <div class="product-card">
                 <a href="product-detail.html?id=${product.id}" class="product-card-link">
-                    <div class="product-image-container"><img src="${product.imageUrl}" alt="${product.name}"></div>
-                    <div class="product-info">
-                        <h3>${product.name}</h3>
-                        <div class="stars">${renderStars(product.avgRating)}</div>
-                        <p class="description">${product.description}</p>
+                    <div class="product-image-container">
+                        <img src="${product.imageUrl}" alt="${product.name}">
                     </div>
                 </a>
-                <div class="product-footer">
-                    <p class="price">${product.price.toLocaleString('vi-VN')} VNĐ</p>
-                    <button class="btn-add-to-cart" onclick="addToCart('${product.id}')">Thêm</button>
+                <div class="product-info">
+                    <h3>${product.name}</h3>
+                    <div class="stars">${renderStars(product.avgRating)}</div>
+                    <p class="description">${product.description}</p>
+                    <div class="product-footer">
+                        <p class="price">${product.price.toLocaleString('vi-VN')} VNĐ</p>
+                        <button class="btn-add-to-cart" onclick="addToCart('${product.id}')">Thêm</button>
+                    </div>
                 </div>
-            </div>`;
+            </div>
+        `;
         productListDiv.innerHTML += productCardHTML;
     });
 }

@@ -1,14 +1,5 @@
-.order-card {
-    margin-bottom: 1.5rem;
-}
-.order-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 1rem;
-}
+.order-card { margin-bottom: 1.5rem; }
+.order-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 1rem; border-bottom: 1px solid #eee; margin-bottom: 1rem; }
 .order-header h3 { margin: 0; }
 .order-details p { margin: 0.5rem 0; }
 .status { font-weight: bold; padding: 4px 12px; border-radius: 20px; color: var(--white-color); font-size: 0.85rem; }

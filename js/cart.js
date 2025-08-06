@@ -1,25 +1,15 @@
 
 
 document.addEventListener('DOMContentLoaded', function() {
-   
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (!currentUser) {
-        
-        if (typeof showToast === 'function') {
-            showToast("Vui lòng đăng nhập để xem giỏ hàng.");
-        } else {
-            alert("Vui lòng đăng nhập để xem giỏ hàng.");
-        }
-        
-        setTimeout(() => window.location.href = 'login.html', 1500);
-        return; 
+        alert("Vui lòng đăng nhập để xem giỏ hàng.");
+        window.location.href = 'login.html';
+        return;
     }
-    
-  
     displayCart();
     displayShippingAddressOptions();
 });
-
 
 function displayCart() {
     const cartContainer = document.getElementById('cart-container');
@@ -27,20 +17,8 @@ function displayCart() {
     const products = JSON.parse(localStorage.getItem('products'));
 
     if (cart.length === 0) {
-        const emptyHTML = `
-            <div class="cart-card">
-                <div class="empty-state">
-                    <p>Giỏ hàng của bạn đang trống.</p>
-                    <a href="index.html" class="btn">Quay lại mua sắm</a>
-                </div>
-            </div>
-        `;
-        cartContainer.innerHTML = emptyHTML;
-       
-        const shippingContainer = document.getElementById('shipping-address-container');
-        if (shippingContainer) {
-            shippingContainer.style.display = 'none';
-        }
+        cartContainer.innerHTML = `<div class="empty-state"><p>Giỏ hàng của bạn đang trống.</p><a href="index.html" class="btn">Quay lại mua sắm</a></div>`;
+        document.getElementById('shipping-address-container').style.display = 'none';
         return;
     }
 
@@ -51,7 +29,6 @@ function displayCart() {
         if (product) {
             const itemTotal = product.price * item.quantity;
             totalAmount += itemTotal;
-            
             itemsHTML += `
                 <div class="cart-item">
                     <div class="cart-item-image">
@@ -78,20 +55,17 @@ function displayCart() {
             `;
         }
     });
-
+    
     const fullCartHTML = `
-        <div class="cart-card">
-            ${itemsHTML}
-            <div class="cart-separator"></div>
-            <div class="cart-summary">
-                <h2>Tổng cộng: ${totalAmount.toLocaleString('vi-VN')} VNĐ</h2>
-                <button class="btn" onclick="placeOrder()">Thanh Toán Ngay</button>
-            </div>
+        ${itemsHTML}
+        <div class="cart-separator"></div>
+        <div class="cart-summary">
+            <h2>Tổng cộng: ${totalAmount.toLocaleString('vi-VN')} VNĐ</h2>
+            <button class="btn" onclick="placeOrder()">Thanh Toán Ngay</button>
         </div>
     `;
     cartContainer.innerHTML = fullCartHTML;
 }
-
 
 function displayShippingAddressOptions() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -99,10 +73,8 @@ function displayShippingAddressOptions() {
     const shippingContainer = document.getElementById('shipping-address-container');
     const addressOptionsDiv = document.getElementById('address-options');
 
-   
     if (currentUser && cart.length > 0) {
         shippingContainer.style.display = 'block';
-        
         if (currentUser.addresses && currentUser.addresses.length > 0) {
             addressOptionsDiv.innerHTML = '';
             currentUser.addresses.forEach((addr, index) => {
@@ -121,47 +93,36 @@ function displayShippingAddressOptions() {
             addressOptionsDiv.innerHTML = '<p>Bạn chưa có địa chỉ giao hàng. Vui lòng thêm địa chỉ trong trang Tài Khoản.</p>';
         }
     } else {
-        shippingContainer.style.display = 'none';
+        if (shippingContainer) shippingContainer.style.display = 'none';
     }
 }
 
-/**
- 
- * @param {string} productId 
- * @param {number} amount 
- */
 function changeQuantity(productId, amount) {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     const itemInCart = cart.find(item => item.id === productId);
     if (itemInCart) {
-        if (amount === -1 && itemInCart.quantity === 1) {
-            
-            removeFromCart(productId, true); 
-            return;
-        }
         itemInCart.quantity += amount;
-        localStorage.setItem('cart', JSON.stringify(cart));
-        displayCart();
-        updateCartIcon();
+        if (itemInCart.quantity <= 0) {
+            removeFromCart(productId, true);
+        } else {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCart();
+            updateCartIcon();
+        }
     }
 }
 
-/**
- * @param {string} productId 
- * @param {boolean} skipConfirm 
- */
 function removeFromCart(productId, skipConfirm = false) {
-    if (!skipConfirm && !confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) {
+    if (!skipConfirm && !confirm('Bạn có chắc muốn xóa sản phẩm này?')) {
         return;
     }
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     cart = cart.filter(item => item.id !== productId);
     localStorage.setItem('cart', JSON.stringify(cart));
     displayCart();
-    displayShippingAddressOptions(); 
+    displayShippingAddressOptions();
     updateCartIcon();
 }
-
 
 function placeOrder() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -171,7 +132,6 @@ function placeOrder() {
         showToast("Vui lòng thêm địa chỉ giao hàng trong trang Tài Khoản!");
         return;
     }
-
     const selectedAddressRadio = document.querySelector('input[name="shippingAddress"]:checked');
     if (!selectedAddressRadio) {
         showToast("Vui lòng chọn một địa chỉ giao hàng!");

@@ -1,17 +1,14 @@
-
 document.addEventListener('DOMContentLoaded', function() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (!currentUser) {
-        alert("Vui lòng đăng nhập.");
+        alert("Vui lòng đăng nhập để xem thông tin.");
         window.location.href = 'login.html';
         return;
     }
     displayAddresses();
-
     const addressForm = document.getElementById('address-form');
     const showFormBtn = document.getElementById('show-address-form-btn');
     const cancelBtn = document.getElementById('cancel-address-btn');
-
     showFormBtn.addEventListener('click', () => {
         addressForm.style.display = 'block';
         showFormBtn.style.display = 'none';

@@ -11,3 +11,4 @@
 .stat-card { background-color: var(--white-color); padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
 .stat-card h4 { margin-top: 0; color: #555; }
 .stat-card p { font-size: 2rem; font-weight: bold; color: var(--primary-color); margin-bottom: 0; }
+.admin-form { margin-top: 1.5rem; }

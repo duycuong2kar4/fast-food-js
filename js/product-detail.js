@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const productId = urlParams.get('id');
     if (productId) {
         displayProductDetails(productId);
+    } else {
+        document.getElementById('product-detail-container').innerHTML = '<h2>Không tìm thấy sản phẩm.</h2>';
     }
 });
 
